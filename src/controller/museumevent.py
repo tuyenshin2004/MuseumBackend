@@ -34,15 +34,15 @@ class Event(Resource):
         try:
             new_event.save_to_db()
         except:
-            return {"message": "An error occurred inserting the artifact."}, 500
+            return {"message": "An error occurred inserting the event."}, 500
         return {"message": "Event added"}, 201
 
     def delete(self, id):
         evt = Museumevent.find_by_id(id)
         if evt:
             evt.delete_from_db()
-            return {'message': 'Artifact deleted.'}
-        return {'message': 'Artifact not found.'}, 404
+            return {'message': 'Event deleted.'}
+        return {'message': 'Event not found.'}, 404
 
     def put(self, id):
         evt = Museumevent.find_by_id(id)
