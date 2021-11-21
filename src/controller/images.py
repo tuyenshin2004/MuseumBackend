@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 
 class image(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('Name', type=str)
     parser.add_argument('Content', type=str)
     parser.add_argument('Url', type=str)
     parser.add_argument('Path', type=str)
@@ -26,7 +27,7 @@ class image(Resource):
 
         if Image.find_by_name(filename):
             return {'message': "An image with name '{}' already exists.".format(filename)}, 400
-        img = Image(Name=filename, Content='', Url='', Path='', MimeType=mimeType)
+        img = Image(Name=filename, Content='', Url=filename, Path='', MimeType=mimeType)
         try:
             img.save_to_db()
         except:
@@ -45,6 +46,7 @@ class image(Resource):
         data = image.parser.parse_args()
         img = Image.find_by_name(name)
         if img:
+            img.Name = data['Name']
             img.Content = data['Content']
             img.Url = data['Url']
             img.Path = data['Path']
