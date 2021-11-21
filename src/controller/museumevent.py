@@ -4,66 +4,56 @@ from flask import request, jsonify
 from flask_restful import Resource, reqparse
 from models.museumeventDb import Museumevent
 
-from database import ma
-
-class MuseumeventSchema(ma.Schema):
-    class Meta:
-        fields = ('Description', 'OpenTime', 'CloseTime', 'EventDate', 'Poster')
-
-event_schema = MuseumeventSchema()
-events_schema = MuseumeventSchema(many=True)
-
 class Event(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('Description', type=str)
+    parser.add_argument('OpenTime')
+    parser.add_argument('CloseTime')
+    parser.add_argument('EventDate')
+    parser.add_argument('Poster', type=int)
+
     def get(self, id):
         evt = Museumevent.find_by_id(id)
         if evt:
-            return event_schema.jsonify(evt)
+            return evt.json
         return {'message': 'Event not found'}, 404
 
     def post(self, id):
-        evt = Museumevent.find_by_id(id)
-        if evt:
+        if Museumevent.find_by_id(id):
             return {'message': "An event with name '{}' already exists.".format(id)}, 400
-
-        Description = request.json['Description']
-        OpenTime = request.json['OpenTime']
-        CloseTime = request.json['CloseTime']
-        EventDate = request.json['EventDate']
-        Poster = request.json['Poster']
-        new_event = Museumevent(Description, OpenTime, CloseTime, EventDate, Poster)
+        data = Event.parser.parse_args()
+        evt = Museumevent(id, **data)
         try:
-            new_event.save_to_db()
-        except:
-            return {"message": "An error occurred inserting the event."}, 500
-        return {"message": "Event added"}, 201
+            evt.save_to_db()
+            return evt.json, 201
+        except Exception as e:
+            print(e)
+            return {"message": "An error occurred inserting the artifact."}, 500
+
 
     def delete(self, id):
         evt = Museumevent.find_by_id(id)
         if evt:
             evt.delete_from_db()
-            return {'message': 'Event deleted.'}
-        return {'message': 'Event not found.'}, 404
+            return {'message': 'Artifact deleted.'}
+        return {'message': 'Artifact not found.'}, 404
 
     def put(self, id):
+        data = Event.parser.parse_args()
         evt = Museumevent.find_by_id(id)
-        Description = request.json['Description']
-        OpenTime = request.json['OpenTime']
-        CloseTime = request.json['CloseTime']
-        EventDate = request.json['EventDate']
-        Poster = request.json['Poster']
+
         if evt:
-            evt.Description = Description
-            evt.OpenTime = OpenTime
-            evt.CloseTime = CloseTime
-            evt.EventDate = EventDate
-            evt.Poster = Poster
+            evt.id = id
+            evt.Description = data['Description']
+            evt.OpenTime = data['OpenTime']
+            evt.CloseTime = data['CloseTime']
+            evt.EventDate = data['EventDate']
+            evt.Poster = data['Poster']
             evt.save_to_db()
-            return event_schema.jsonify(evt)
+            return evt.json
         return {'message': 'Event not found.'}, 404
 
 class Events(Resource):
     def get(self):
-        all_events = Museumevent.query.all()
-        result = events_schema.dump(all_events)
-        return jsonify(result)
-
+        evt= {'events': list(map(lambda x: x.json, Museumevent.query.all()))}
+        return evt

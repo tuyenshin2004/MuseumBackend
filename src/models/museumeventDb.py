@@ -1,8 +1,11 @@
-from sqlalchemy.orm import relationship
-import json
 import datetime
+from sqlalchemy.orm import relationship
 from database import db
 
+
+def default(obj):
+    if isinstance(obj, (datetime.date, datetime.time)):
+        return obj.isoformat()
 
 class Museumevent(db.Model):
         __tablename__ = 'museumevent'
@@ -14,18 +17,23 @@ class Museumevent(db.Model):
         Poster = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
         Image = relationship("Image", foreign_keys=[Poster])
 
-        def __init__(self, Description, OpenTime, CloseTime, EventDate, Poster):
-                self.Description = Description
-                self.OpenTime = OpenTime
-                self.CloseTime = CloseTime
-                self.EventDate = EventDate
-                self.Poster = Poster
-
-
+        def __init__(self,EventId, Description, OpenTime, CloseTime, EventDate, Poster):
+            self.EventId = EventId
+            self.Description = Description
+            self.OpenTime = OpenTime
+            self.CloseTime = CloseTime
+            self.EventDate = EventDate
+            self.Poster = Poster
 
         def json(self):
-            return {'Description': self.Description, 'OpenTime': json.dumps(self.OpenTime), 'CloseTime': json.dumps(self.CloseTime),
-                    'EventDate': json.dumps(self.EventDate), 'Poster': self.Poster}
+            if isinstance(self.OpenTime, datetime.time):
+                self.OpenTime = self.OpenTime.strftime("%H:%M:%S")
+            if isinstance(self.CloseTime, datetime.time):
+                self.CloseTime = self.CloseTime.strftime("%H:%M:%S")
+            if isinstance(self.EventDate, datetime.date):
+                self.EventDate = self.EventDate.strftime("%m-%d-%Y")
+
+            return {'EventId':self.EventId,'Description' : self.Description, 'OpenTime' : self.OpenTime, 'CloseTime' : self.CloseTime, 'EventDate' : self.EventDate, 'Poster': self.Poster}
 
         @classmethod
         def find_by_name(cls, name):
