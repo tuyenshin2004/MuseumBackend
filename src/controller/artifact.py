@@ -19,6 +19,7 @@ class artifact(Resource):
         if Artifact.find_by_name(name):
             return {'message': "An artifact with name '{}' already exists.".format(name)}, 400
         data = artifact.parser.parse_args()
+        data.__setattr__('Name', name)
         art = Artifact(**data)
         try:
             art.save_to_db()
