@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from models.museumeventDb import Museumevent
+from src.models.museumeventDb import Museumevent
 
 class Event(Resource):
     parser = reqparse.RequestParser()
