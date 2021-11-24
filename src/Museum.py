@@ -5,6 +5,8 @@ from database import db
 from controller.images import image, Images
 from controller.artifact import artifact, artifacts
 from controller.museumevent import Event, Events
+from controller.souvenir import souvenir, souvenirs
+from controller.artifacttype import artifactType, artifactTypes
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/museum'
@@ -19,6 +21,12 @@ api.add_resource(artifacts, '/artifacts')
 
 api.add_resource(Event, '/event/<string:name>')
 api.add_resource(Events, '/events')
+
+api.add_resource(souvenir, '/souvenir/<string:name>')
+api.add_resource(souvenirs, '/souvenirs')
+
+api.add_resource(artifactType, '/artifactType/<string:name>')
+api.add_resource(artifactTypes, '/artifactTypes')
 
 if __name__ == '__main__':
     db.init_app(app)

@@ -33,7 +33,7 @@ class image(Resource):
         except:
             return {"message": "An error occurred inserting the image."}, 500
 
-        return img.json(), 201
+        return {'message': 'Image added.'}, 201
 
     def delete(self,name):
         img = Image.find_by_name(name)
