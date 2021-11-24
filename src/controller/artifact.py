@@ -25,7 +25,7 @@ class artifact(Resource):
             art.save_to_db()
         except:
             return {"message": "An error occurred inserting the artifact."}, 500
-        return art.json(), 201
+        return {"message": "Artifact added."}, 201
 
     def delete(self, name):
         art = Artifact.find_by_name(name)
@@ -49,5 +49,5 @@ class artifact(Resource):
 
 class artifacts(Resource):
     def get(self):
-        return {'artifact': list(map(lambda x: x.json(), Artifact.query.all()))}
+        return {'artifacts': list(map(lambda x: x.json(), Artifact.query.all()))}
 

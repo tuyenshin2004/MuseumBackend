@@ -25,17 +25,17 @@ class Event(Resource):
         evt = Museumevent(**data)
         try:
             evt.save_to_db()
-            return evt.json(), 201
+            return {"message": "Event added."}, 201
         except:
-            return {"message": "An error occurred inserting the artifact."}, 500
+            return {"message": "An error occurred inserting the event."}, 500
 
 
     def delete(self, name):
         evt = Museumevent.find_by_name(name)
         if evt:
             evt.delete_from_db()
-            return {'message': 'Artifact deleted.'}
-        return {'message': 'Artifact not found.'}, 404
+            return {'message': 'Event deleted.'}
+        return {'message': 'Event not found.'}, 404
 
     def put(self, name):
         data = Event.parser.parse_args()
