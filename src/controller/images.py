@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
-from models.imageDb import Image
+from src.models.imageDb import Image
 from werkzeug.utils import secure_filename
 
 class image(Resource):

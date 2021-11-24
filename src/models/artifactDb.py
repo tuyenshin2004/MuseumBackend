@@ -1,6 +1,6 @@
 from sqlalchemy.orm import relationship
 
-from database import db
+from src.database import db
 
 class Artifact(db.Model):
     __tablename__ = 'artifact'

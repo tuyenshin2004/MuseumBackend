@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
-from models.artifactDb import Artifact
+from src.models.artifactDb import Artifact
 
 class artifact(Resource):
     parser = reqparse.RequestParser()

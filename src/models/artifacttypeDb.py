@@ -1,4 +1,4 @@
-from database import db
+from src.database import db
 
 class  ArtifactType(db.Model):
         __tablename__ = 'artifacttype'

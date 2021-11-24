@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from models.souvenirDb import Souvenir
+from src.models.souvenirDb import Souvenir
 
 class souvenir(Resource):
     parser = reqparse.RequestParser()

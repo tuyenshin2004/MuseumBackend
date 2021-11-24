@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from models.artifacttypeDb import ArtifactType
+from src.models.artifacttypeDb import ArtifactType
 
 class artifactType(Resource) :
     parser = reqparse.RequestParser()
