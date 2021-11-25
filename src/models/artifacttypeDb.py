@@ -4,11 +4,12 @@ class  ArtifactType(db.Model):
         __tablename__ = 'artifacttype'
         ArtifactTypeId = db.Column(db.Integer, primary_key=True)
         Name = db.Column(db.String(50))
-        def __init__(self, Name):
+        def __init__(self,ArtifactTypeId, Name):
+                self.ArtifactTypeId = ArtifactTypeId
                 self.Name = Name
 
         def json(self):
-                return {'Name':self.Name}
+                return {'ArtifactTypeId': self.ArtifactTypeId,'Name':self.Name}
 
         @classmethod
         def find_by_name(cls, name):

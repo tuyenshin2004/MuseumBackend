@@ -11,14 +11,15 @@ class Artifact(db.Model):
     ImageId = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
     Image = relationship("Image", foreign_keys=[ImageId])
 
-    def __init__(self, Name, Description, Level, ImageId):
+    def __init__(self,ArtifactId, Name, Description, Level, ImageId):
+        self.ArtifactId = ArtifactId
         self.Name = Name
         self.Description = Description
         self.Level = Level
         self.ImageId = ImageId
 
     def json(self):
-        return {'Name' : self.Name, 'Description' : self.Description, 'Level' : self.Level,'ImageId' : self.ImageId}
+        return {'ArtifactId': self.ArtifactId,'Name' : self.Name, 'Description' : self.Description, 'Level' : self.Level,'ImageId' : self.ImageId}
 
     @classmethod
     def find_by_name(cls, name):

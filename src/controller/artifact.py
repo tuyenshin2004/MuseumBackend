@@ -4,6 +4,7 @@ from src.models.artifactDb import Artifact
 
 class artifact(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('ArtifactId', type=int)
     parser.add_argument('Name', type=str)
     parser.add_argument('Description', type=str)
     parser.add_argument('Level', type=int)
@@ -15,11 +16,10 @@ class artifact(Resource):
             return atf.json()
         return {'message': 'Artifact not found'}, 404
 
-    def post(self, name):
-        if Artifact.find_by_name(name):
-            return {'message': "An artifact with name '{}' already exists.".format(name)}, 400
+    def post(self):
         data = artifact.parser.parse_args()
-        data.__setattr__('Name', name)
+        if Artifact.find_by_name(data.get('Name')):
+            return {'message': "An artifact with name '{}' already exists.".format(data.get('Name'))}, 400
         art = Artifact(**data)
         try:
             art.save_to_db()

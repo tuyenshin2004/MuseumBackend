@@ -10,7 +10,8 @@ class Image(db.Model):
     Path = db.Column(db.String(100))
     MimeType = db.Column(db.String(100))
 
-    def __init__(self, Name, Content, Url, Path, MimeType):
+    def __init__(self,ImageId, Name, Content, Url, Path, MimeType):
+        self.ImageId = ImageId
         self.Name = Name
         self.Content = Content
         self.Url = Url
@@ -18,7 +19,7 @@ class Image(db.Model):
         self.MimeType = MimeType
 
     def json(self):
-        return {'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
+        return {'ImageId': self.ImageId,'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
                 'MimeType': self.MimeType}
 
     @classmethod

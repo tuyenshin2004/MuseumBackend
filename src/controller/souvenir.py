@@ -3,6 +3,7 @@ from src.models.souvenirDb import Souvenir
 
 class souvenir(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('SouvenirId', type=int)
     parser.add_argument('Name', type=str)
     parser.add_argument('Description', type=str)
     parser.add_argument('Price', type=int)
@@ -15,11 +16,11 @@ class souvenir(Resource):
             return sou.json()
         return {'message': 'Souvenir not found'}, 404
 
-    def post(self, name):
-        if Souvenir.find_by_name(name):
-            return {'message': "An souvenir with name '{}' already exists.".format(name)}, 400
+    def post(self):
         data = souvenir.parser.parse_args()
-        data.__setattr__('Name', name)
+        if Souvenir.find_by_name(data.get('Name')):
+            return {'message': "An souvenir with name '{}' already exists.".format(data.get('Name'))}, 400
+
         sou = Souvenir(**data)
         try:
             sou.save_to_db()

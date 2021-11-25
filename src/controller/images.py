@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 
 class image(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('ImageId', type=int)
     parser.add_argument('Name', type=str)
     parser.add_argument('Content', type=str)
     parser.add_argument('Url', type=str)

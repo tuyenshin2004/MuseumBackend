@@ -11,7 +11,8 @@ class Souvenir(db.Model):
         ImageId = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
         Image = relationship("Image", foreign_keys=[ImageId])
 
-        def __init__(self, Name, Description, Price, Discount, ImageId):
+        def __init__(self,SouvenirId, Name, Description, Price, Discount, ImageId):
+                self.SouvenirId = SouvenirId
                 self.Name = Name
                 self.Description = Description
                 self.Price = Price
@@ -19,7 +20,7 @@ class Souvenir(db.Model):
                 self.ImageId = ImageId
 
         def json(self):
-                return {'Name': self.Name, 'Description': self.Description, 'Price': self.Price,
+                return {'SouvenirId': self.SouvenirId,'Name': self.Name, 'Description': self.Description, 'Price': self.Price,
                         'Discount': self.Discount, 'ImageId': self.ImageId}
 
         @classmethod

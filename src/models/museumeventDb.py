@@ -13,7 +13,8 @@ class Museumevent(db.Model):
     Poster = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
     Image = relationship("Image", foreign_keys=[Poster])
 
-    def __init__(self, Name, Description, OpenTime, CloseTime, EventDate, Poster):
+    def __init__(self,EventId, Name, Description, OpenTime, CloseTime, EventDate, Poster):
+        self.EventId = EventId
         self.Name = Name
         self.Description = Description
         self.OpenTime = OpenTime
@@ -28,7 +29,7 @@ class Museumevent(db.Model):
             self.CloseTime = self.CloseTime.strftime("%H:%M:%S")
         if isinstance(self.EventDate, datetime.date):
             self.EventDate = self.EventDate.strftime("%Y-%m-%d")
-        return {'Name': self.Name,'Description' : self.Description, 'OpenTime' : self.OpenTime, 'CloseTime' : self.CloseTime, 'EventDate' : self.EventDate, 'Poster': self.Poster}
+        return {'EventId': self.EventId,'Name': self.Name,'Description' : self.Description, 'OpenTime' : self.OpenTime, 'CloseTime' : self.CloseTime, 'EventDate' : self.EventDate, 'Poster': self.Poster}
 
 
     @classmethod

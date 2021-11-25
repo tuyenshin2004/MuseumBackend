@@ -3,6 +3,7 @@ from src.models.artifacttypeDb import ArtifactType
 
 class artifactType(Resource) :
     parser = reqparse.RequestParser()
+    parser.add_argument('ArtifactTypeId', type=id)
     parser.add_argument('Name', type=str)
 
     def get(self, name):
@@ -11,11 +12,13 @@ class artifactType(Resource) :
             return at.json()
         return {'message': 'ArtifactType not found'}, 404
 
-    def post(self, name):
-        if ArtifactType.find_by_name(name):
-            return {'message': "An artifactType with name '{}' already exists.".format(name)}, 400
+    def post(self):
         data = artifactType.parser.parse_args()
-        data.__setattr__('Name', name)
+        if ArtifactType.find_by_name(data.get('Name')):
+            return {'message': "An artifactType with name '{}' already exists.".format(data.get('Name'))}, 400
+
+        #data.__setattr__('Name', name)
+
         at = ArtifactType(**data)
         try:
             at.save_to_db()

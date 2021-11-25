@@ -4,6 +4,7 @@ from src.models.museumeventDb import Museumevent
 
 class Event(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('EventId', type=int)
     parser.add_argument('Name', type=str)
     parser.add_argument('Description', type=str)
     parser.add_argument('OpenTime')
@@ -17,11 +18,10 @@ class Event(Resource):
             return evt.json()
         return {'message': 'Event not found'}, 404
 
-    def post(self, name):
-        if Museumevent.find_by_name(name):
-            return {'message': "An event with name '{}' already exists.".format(name)}, 400
+    def post(self):
         data = Event.parser.parse_args()
-        data.__setattr__('Name',  name)
+        if Museumevent.find_by_name(data.get('Name')):
+            return {'message': "An event with name '{}' already exists.".format(data.get('Name'))}, 400
         evt = Museumevent(**data)
         try:
             evt.save_to_db()
