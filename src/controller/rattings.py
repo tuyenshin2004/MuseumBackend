@@ -16,7 +16,8 @@ class ratting(Resource):
             return data.json()
         return {'message': 'not found'}, 404
 
-    # xem lai cho nay, error
+    # xem lai cho nay, error 
+    # AccountId phải đã có trong bảng Account
     def post(self):
         data = ratting.parser.parse_args()
         if Ratting.find_by_AccountId(data.get('AccountId')):
