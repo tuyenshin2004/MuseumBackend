@@ -2,3 +2,7 @@ flask
 flask_mysqldb
 flask_sqlalchemy
 flask_restful
+flask-bcrypt
+werkzeug.*
+flask_mail
+itsdangerous

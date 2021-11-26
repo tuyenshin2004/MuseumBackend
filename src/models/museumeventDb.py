@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy.orm import relationship
-from database import db
+from src.database import db
 
 class Museumevent(db.Model):
     __tablename__  = 'museumevent'
