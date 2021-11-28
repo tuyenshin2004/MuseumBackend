@@ -6,3 +6,6 @@ flask-bcrypt
 werkzeug.*
 flask_mail
 itsdangerous
+jwt
+flask_jwt_extended == 3.21.0
+PyJWT == 1.7.1
