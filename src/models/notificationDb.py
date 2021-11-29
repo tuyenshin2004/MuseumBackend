@@ -12,7 +12,6 @@ class Notification(db.Model):
     Content = db.Column(db.String(200))
     Time = db.Column(db.Date)
     Unread = db.Column(db.Integer)
-    Account = relationship("Account", foreign_keys=[AccountId])
 
 
     def __init__(self,NotificationId, AccountId, Title,Content, Time, Unread ):

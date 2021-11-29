@@ -6,8 +6,6 @@ class AccountFA(db.Model):
     AccountId = db.Column(db.Integer, db.ForeignKey('account.AccountId'), primary_key=True)
     ArtifactId = db.Column(db.Integer, db.ForeignKey('artifact.ArtifactId'), primary_key=True)
     # # Khóa ngoại chỉ mục : INDEX
-    Account = relationship("Account", foreign_keys=[AccountId])
-    Artifact = relationship("Artifact", foreign_keys=[ArtifactId])
 
     def __init__(self, AccountId, ArtifactId):
         self.AccountId = AccountId

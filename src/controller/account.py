@@ -1,3 +1,5 @@
+import os
+
 from flask_restful import Resource, reqparse
 from src.models.accountDb import AccountDb, RevokedTokenModel
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -82,11 +84,11 @@ class Register(Resource):
         token = su.dumps(email.lower(), salt='email-confirm')
         link = url_for('confirmation', token=token, _external=True)
         try:
-            msg = Message('Confirm Email', sender='yourmail@gmail.com', recipients=[email.lower()])
+            msg = Message('Confirm Email', sender=os.environ['MAIL'], recipients=[email.lower()])
             msg.body = 'Your link is {}'.format(link)
             my_mail.send(msg)
             user.save_to_db()
-        except:
+        except :
             return {'message': "Unable to send confirmation mail"}, 400
         # msg = EmailMessage()
         # s = smtplib.SMTP(host='smtp.gmail.com', port=587)

@@ -8,7 +8,6 @@ class Ratting(db.Model):
     Star = db.Column(db.Integer)
     Description = db.Column(db.String(500))
     AccountId = db.Column(db.Integer, db.ForeignKey('account.AccountId'))
-    Account = relationship("Account", foreign_keys=[AccountId])
 
     def __init__(self, RattingId, Star, Description, AccountId):
         self.RattingId = RattingId

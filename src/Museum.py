@@ -5,20 +5,67 @@ from database import db
 from controller.images import image, Images
 from controller.artifact import artifact, artifacts
 from controller.museumevent import Event, Events
+from controller.souvenir import souvenir, souvenirs
+from controller.artifacttype import artifactType, artifactTypes
+from src.controller.account import Account, Register, Confirmation, Repass, ChangePass, UserLogoutAccess
+
+from controller.artifacttypemapping import artifactTypeMapping, artifactTypeMappings, artifactsType
+from controller.accountfavoriteartifact import accountFA, accountFAs,accountsFAs
+from controller.rattings import Rattings, ratting
+from controller.notification import notification, Notifications
+from src import controller
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/museum'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_pyfile('core/config.py')
 
 api = Api(app)
+controller.init_app(app)
 
 api.add_resource(image, '/image/<string:name>',  '/image')
 api.add_resource(Images, '/images')
 api.add_resource(artifact, '/artifact/<string:name>')
 api.add_resource(artifacts, '/artifacts')
 
-api.add_resource(Event, '/event/<string:name>')
+api.add_resource(Event, '/event/<string:name>', '/event')
 api.add_resource(Events, '/events')
+
+api.add_resource(souvenir, '/souvenir/<string:name>', '/souvenir')
+api.add_resource(souvenirs, '/souvenirs')
+
+api.add_resource(artifactType, '/artifactType/<string:name>', '/artifactType')
+api.add_resource(artifactTypes, '/artifactTypes')
+
+api.add_resource(Account, '/login')
+api.add_resource(Register, '/register')
+api.add_resource(Confirmation, '/confirm_email/<token>')
+api.add_resource(Repass, '/repass')
+api.add_resource(ChangePass, '/changepass')
+api.add_resource(UserLogoutAccess, '/logout')
+
+api.add_resource(Rattings, '/rattings')
+api.add_resource(ratting, '/ratting/<int:id>', '/ratting')
+
+api.add_resource(Notifications, '/notifications')
+api.add_resource(notification, '/notification/<int:id>')
+
+api.add_resource(artifactTypeMapping, '/artifactTypeMapping/<int:id>&<int:typeId>', '/artifactTypeMapping')
+api.add_resource(artifactTypeMappings, '/artifactTypeMappings')
+api.add_resource(artifactsType, '/artifactsType/<int:id>')
+
+#accountFavoriteArtifact
+api.add_resource(accountFA, '/accountFA/<int:AccId>&<int:id>', '/accountFA')
+api.add_resource(accountsFAs, '/accountFAs')
+api.add_resource(accountFAs, '/accountFAs/<int:id>')
+
+@controller.jwt_manager.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+
+    jti = decrypted_token['jti']
+
+    return controller.account.RevokedTokenModel.is_jti_blacklisted(jti)
 
 if __name__ == '__main__':
     db.init_app(app)

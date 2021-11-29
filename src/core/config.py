@@ -1,9 +1,14 @@
 from datetime import timedelta
+import os
 
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587
-MAIL_USERNAME = "yourmail@gmail.com"
-MAIL_PASSWORD = "yourpass"
+
+os.environ['MAIL'] = 'tuyenshincn1@gmail.com'
+os.environ['PASS'] = 'tuyencn1@'
+
+MAIL_USERNAME = os.environ['MAIL']
+MAIL_PASSWORD = os.environ['PASS']
 MAIL_USE_TLS = True
 MAIL_USE_SSL = False
 #USE_CREDENTIALS = True
