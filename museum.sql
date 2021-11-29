@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 26, 2021 at 06:22 PM
+-- Generation Time: Nov 29, 2021 at 01:02 PM
 -- Server version: 10.4.21-MariaDB-log
 -- PHP Version: 8.0.10
 
@@ -83,6 +83,15 @@ CREATE TABLE `accounttest` (
   `CreateAt` datetime DEFAULT NULL,
   `UpdateAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `accounttest`
+--
+
+INSERT INTO `accounttest` (`AccountId`, `email`, `Password`, `RoleId`, `isActivated`, `confirmedAt`, `GoogleId`, `CreateAt`, `UpdateAt`) VALUES
+(51, '19020204@vnu.edu.vn', 'sha256$sM58UADvQuaY8nS3$e93d9a4c4d65527f77a2632469176936f43af93ed48c62da488bd169d4e56818', NULL, 0, NULL, NULL, '2021-11-26 21:32:17', NULL),
+(52, '19020484@vnu.edu.vn', 'sha256$TGnG37sWbuUlT8Ct$634bb2437318745d55b90e58972fdbf059e8e51545de0c5c06472b8f02d732d2', NULL, 0, NULL, NULL, '2021-11-26 21:32:32', NULL),
+(53, 'trangco19621962@gmail.com', 'sha256$bx4zNfp9rPsQc289$5cea5819f71c66983a4ea1c798a087721d0ce89afc0ea2d9a524862cdcc23dc7', NULL, 1, '2021-11-28 18:40:44', NULL, '2021-11-28 18:40:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -240,6 +249,25 @@ CREATE TABLE `rattings` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `revoked_tokens`
+--
+
+CREATE TABLE `revoked_tokens` (
+  `id` int(11) NOT NULL,
+  `jti` varchar(120) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `revoked_tokens`
+--
+
+INSERT INTO `revoked_tokens` (`id`, `jti`) VALUES
+(1, '4a676677-9e77-4f21-8ce2-d9fec624180f'),
+(2, 'f4c2cdea-7536-45a8-9356-0c095993fdbd');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `souvenir`
 --
 
@@ -374,6 +402,12 @@ ALTER TABLE `rattings`
   ADD KEY `fk_rattings_account` (`AccountId`);
 
 --
+-- Indexes for table `revoked_tokens`
+--
+ALTER TABLE `revoked_tokens`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `souvenir`
 --
 ALTER TABLE `souvenir`
@@ -400,7 +434,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `accounttest`
 --
 ALTER TABLE `accounttest`
-  MODIFY `AccountId` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `AccountId` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `agegroup`
@@ -455,6 +489,12 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `rattings`
   MODIFY `RattingId` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `revoked_tokens`
+--
+ALTER TABLE `revoked_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `souvenir`
