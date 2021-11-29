@@ -5,7 +5,7 @@ from database import db
 from controller.images import image, Images
 from controller.artifact import artifact, artifacts
 from controller.museumevent import Event, Events
-from src.controller.account import Account, Register, Confirmation, Repass
+from src.controller.account import Account, Register, Confirmation, Repass, ChangePass, UserLogoutAccess
 from src import controller
 
 
@@ -23,10 +23,19 @@ api.add_resource(artifact, '/artifact/<string:name>')
 api.add_resource(artifacts, '/artifacts')
 api.add_resource(Event, '/event/<string:name>')
 api.add_resource(Events, '/events')
-api.add_resource(Account, '/')
+api.add_resource(Account, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Confirmation, '/confirm_email/<token>')
 api.add_resource(Repass, '/repass')
+api.add_resource(ChangePass, '/changepass')
+api.add_resource(UserLogoutAccess, '/logout')
+
+@controller.jwt_manager.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+
+    jti = decrypted_token['jti']
+
+    return controller.account.RevokedTokenModel.is_jti_blacklisted(jti)
 
 
 

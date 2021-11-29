@@ -1,17 +1,20 @@
 from flask_restful import Resource, reqparse
-from src.models.accountDb import AccountDb
+from src.models.accountDb import AccountDb, RevokedTokenModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from src.controller import my_mail
 from flask import url_for, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity, get_raw_jwt
 from flask_mail import Message
 
+import json
 import re
 import random
 import string
-
+import jwt
+import smtplib
+from email.message import EmailMessage
 su = URLSafeTimedSerializer('Thisisasecret!') # reformat later
 
 
@@ -148,6 +151,59 @@ class Repass(Resource):
         except:
             return {'message': "Unable to send confirmation mail"}, 400
         return {'message': "New password sent to your mailbox!"}, 200
+
+
+class ChangePass(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('password', type=str)
+    parser.add_argument('newpassword', type=str)
+    parser.add_argument('renewpassword', type=str)
+
+    @jwt_required
+    def post(self):
+        data = ChangePass.parser.parse_args()
+        password = data['password']
+        new_password = data['newpassword']
+        re_new_password = data['renewpassword']
+        if new_password != re_new_password:
+            return {'message': "Not matching new password"}, 400
+        email = get_jwt_identity()
+        get_user = AccountDb.find_by_email(email)
+        if check_password_hash(get_user.Password, password):
+            get_user.Password = generate_password_hash(new_password, method='sha256')
+            get_user.updatedAt = datetime.now()
+            get_user.commit_to_db()
+            return {'message': "New password saved succeed!"}, 200
+        return {'message': "Wrong password"}, 400
+
+
+class UserLogoutAccess(Resource):
+    """
+    User Logout Api
+    """
+
+    @jwt_required
+    def post(self):
+
+        jti = get_raw_jwt()['jti']
+        # revoked_token = RevokedTokenModel(jti=jti)
+        #
+        # revoked_token.add()
+        #
+        # return {'message': 'Access token has been revoked'}, 200
+        try:
+            # Revoking access token
+            revoked_token = RevokedTokenModel(jti=jti)
+
+            revoked_token.add()
+
+            return {'message': 'Access token has been revoked'}, 200
+
+        except:
+
+            return {'message': 'Something went wrong'}, 500
+
+
 
 
 
