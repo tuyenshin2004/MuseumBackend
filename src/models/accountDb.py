@@ -1,68 +1,99 @@
-import datetime
-
-from sqlalchemy.orm import relationship
-
 from src.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class Account(db.Model):
-    __tablename__ = 'account'
-    AccountId = db.Column(db.Integer, primary_key=True)
-    displayName = db.Column(db.String(100))
-    email = db.Column(db.String(50))
-    Phone = db.Column(db.String(50))
-    Password = db.Column(db.String(50))
-    DOB = db.Column(db.Date)
+
+class AccountDb(db.Model):
+    __tablename__ = 'accounttest'
+    AccountId = db.Column(db.Integer, primary_key=True, autoincrement= True)
+    # displayName = db.Column(db.String(50))
+    email = db.Column(db.String(100))
+    Password = db.Column(db.String)
     RoleId = db.Column(db.Integer)
-    RecoverPasswordCode = db.Column(db.String(50))
-    ExpiredTimeCode = db.Column(db.Date)
-    FacebookId = db.Column(db.String(50))
+    isActivated = db.Column(db.Boolean(), nullable=False, server_default='0')
+    confirmedAt = db.Column(db.DateTime)
+    # RecoverPasswordCode = db.Column(db.String(50))
+    # ExpiredTimeCode = db.Column(db.DateTime)
+    # FacebookId = db.Column(db.String(50))
     GoogleId = db.Column(db.String(50))
-    CreateAt = db.Column(db.Date)
-    UpdateAt = db.Column(db.Date)
-    ImageId = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
-    Image = relationship("Image", foreign_keys=[ImageId])
+    CreateAt = db.Column(db.DateTime)
+    UpdateAt = db.Column(db.TIMESTAMP)
+    # ImageId = db.Column(db.Integer)
 
-    def __init__(self, AccountId, displayName, email, Phone, Password, DOB, RoleId, RecoverPasswordCode, ExpiredTimeCode, FacebookId, GoogleId, CreateAt, UpdateAt,ImageId ):
+    def __init__(self, AccountId, email, Password, RoleId,
+                 isActivated, confirmedAt,
+                GoogleId, CreateAt, UpdateAt,
+                ):
         self.AccountId = AccountId
-        self.displayName = displayName
         self.email = email
-        self.Phone = Phone
         self.Password = Password
-        self.DOB = DOB
         self.RoleId = RoleId
-        self.RoleId = RoleId
-        self.RecoverPasswordCode = RecoverPasswordCode
-        self.ExpiredTimeCode =ExpiredTimeCode
-        self.FacebookId = FacebookId
+        self.isActivated = isActivated
+        self.confirmedAt = confirmedAt
         self.GoogleId = GoogleId
         self.CreateAt = CreateAt
         self.UpdateAt = UpdateAt
-        self.ImageId = ImageId
 
-    def json(self):
-        if isinstance(self.DOB, datetime.date):
-            self.DOB = self.DOB.strftime("%Y-%m-%d")
+    def __init__(self, email, Password, createdAt):
 
-        if isinstance(self.ExpiredTimeCode, datetime.date):
-            self.ExpiredTimeCode = self.ExpiredTimeCode.strftime("%Y-%m-%d")
+        self.email = email
+        self.Password = Password
+        self.CreateAt = createdAt
 
-        if isinstance(self.CreateAt, datetime.date):
-            self.CreateAt = self.CreateAt.strftime("%Y-%m-%d")
-
-        if isinstance(self.UpdateAt, datetime.date):
-            self.UpdateAt = self.UpdateAt.strftime("%Y-%m-%d")
-
-        return {"AccountId": self.AccountId, "displayName": self.displayName, "email": self.email, "Phone": self.Phone, "Password": self.Password, "DOB": self.DOB, "RoleId": self.RoleId, "RecoverPasswordCode": self.RecoverPasswordCode,
-                "ExpiredTimeCode":self.ExpiredTimeCode, "FacebookId": self.FacebookId, "GoogleId": self.GoogleId, "CreateAt": self.CreateAt, "UpdateAt": self.UpdateAt, "ImageId": self.ImageId}
+    # def json(self):
+    #     return {'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
+    #             'MimeType': self.MimeType}
+    #
+    @classmethod
+    def find_account(cls, mail, passWord):
+        return cls.query.filter_by(email=mail, Password=passWord).first()
 
     @classmethod
-    def find_by_Id(cls, id):
-        return cls.query.filter_by(AccountId = id).first()
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
+    def check_password(cls, password, email):
+        user = cls.query.filter_by(email=email).first()
+        return check_password_hash(user.Password, password)
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.delete(self)
+    def commit_to_db(self):
         db.session.commit()
+    #
+    # def delete_from_db(self):
+    #     db.session.delete(self)
+    #     db.session.commit()
+
+
+class RevokedTokenModel(db.Model):
+    """
+    Revoked Token Model Class
+    """
+
+    __tablename__ = 'revoked_tokens'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    jti = db.Column(db.String(120))
+
+    """
+    Save Token in DB
+    """
+
+    def add(self):
+        db.session.add(self)
+
+        db.session.commit()
+
+    """
+    Checking that token is blacklisted
+    """
+
+    @classmethod
+    def is_jti_blacklisted(cls, jti):
+        query = cls.query.filter_by(jti=jti).first()
+
+        return bool(query)
