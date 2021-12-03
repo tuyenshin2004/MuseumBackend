@@ -1,3 +1,5 @@
+import datetime
+
 from flask import jsonify
 from flask_restful import Resource, reqparse
 from src.models.museumeventDb import Museumevent
@@ -20,8 +22,8 @@ class Event(Resource):
 
     def post(self):
         data = Event.parser.parse_args()
-        if Museumevent.find_by_name(data.get('Name')):
-            return {'message': "An event with name '{}' already exists.".format(data.get('Name'))}, 400
+        if Museumevent.find_by_name(data.get('name')):
+            return {'message': "An event with name '{}' already exists.".format(data.get('name'))}, 400
         evt = Museumevent(**data)
         try:
             evt.save_to_db()

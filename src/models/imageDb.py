@@ -1,16 +1,19 @@
+import base64
 from src.database import db
 
 
 class Image(db.Model):
     __tablename__ = 'image'
-    ImageId = db.Column(db.Integer, primary_key=True)
+    ImageId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Name = db.Column(db.String(50))
     Content = db.Column(db.String(100))
-    Url = db.Column(db.String(100))
+    Url = db.Column(db.BLOB)
     Path = db.Column(db.String(100))
     MimeType = db.Column(db.String(100))
 
-    def __init__(self,ImageId, Name, Content, Url, Path, MimeType):
+
+
+    def __init__(self, ImageId, Name, Content, Url, Path, MimeType):
         self.ImageId = ImageId
         self.Name = Name
         self.Content = Content
@@ -18,8 +21,17 @@ class Image(db.Model):
         self.Path = Path
         self.MimeType = MimeType
 
+    def __init__(self, Name, Content, Url, Path, MimeType):
+        self.Name = Name
+        self.Content = Content
+        self.Url = Url
+        self.Path = Path
+        self.MimeType = MimeType
+
+
     def json(self):
-        return {'ImageId': self.ImageId,'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
+        self.Url = str(self.Url)
+        return {'ImageId': self.ImageId, 'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
                 'MimeType': self.MimeType}
 
     @classmethod

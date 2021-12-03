@@ -17,12 +17,10 @@ class notification(Resource):
             return data.json()
         return {'message': 'not found'}, 404
 
-    def post(self, id):
-        if Notification.find_by_Id(id):
-            return {'message': "An notification with id '{}' already exists.".format(id)}, 400
-
+    def post(self):
         data = notification.parser.parse_args()
-        data.__setattr__('NotificationId', id)
+        if Notification.find_by_title(data['Title']):
+            return {'message': "An notification with title '{}' already exists.".format(data['Title'])}, 400
         r = Notification(**data)
         try:
             r.save_to_db()
@@ -43,7 +41,6 @@ class notification(Resource):
         data = notification.parser.parse_args()
         r = Notification.find_by_Id(id)
         if r:
-            r.NotificationId = data['NotificationId']
             r.AccountId = data['AccountId']
             r.Title = data['Title']
             r.Content = data['Content']

@@ -14,7 +14,7 @@ class Notification(db.Model):
     Unread = db.Column(db.Integer)
 
 
-    def __init__(self,NotificationId, AccountId, Title,Content, Time, Unread ):
+    def __init__(self, NotificationId, AccountId, Title,Content, Time, Unread ):
         self.NotificationId = NotificationId
         self.AccountId = AccountId
         self.Title = Title
@@ -31,6 +31,10 @@ class Notification(db.Model):
     @classmethod
     def find_by_Id(cls, id):
         return cls.query.filter_by(NotificationId=id).first()
+
+    @classmethod
+    def find_by_title(cls, title):
+        return cls.query.filter_by(Title=title).first()
 
     def save_to_db(self):
         db.session.add(self)

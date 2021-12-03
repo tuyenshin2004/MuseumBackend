@@ -5,7 +5,7 @@ from src.database import db
 class Ratting(db.Model):
     __tablename__ = 'rattings'
     RattingId = db.Column(db.Integer, primary_key=True)
-    Star = db.Column(db.Integer)
+    Star = db.Column(db.Float)
     Description = db.Column(db.String(500))
     AccountId = db.Column(db.Integer, db.ForeignKey('account.AccountId'))
 

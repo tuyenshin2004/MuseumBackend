@@ -88,7 +88,8 @@ class Register(Resource):
             msg.body = 'Your link is {}'.format(link)
             my_mail.send(msg)
             user.save_to_db()
-        except :
+        except Exception as e:
+            print(e)
             return {'message': "Unable to send confirmation mail"}, 400
         return {'message': "Login success"}, 200
 

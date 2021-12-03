@@ -14,21 +14,18 @@ class AccountFA(db.Model):
     def json(self):
         return {'AccountId': self.AccountId, 'ArtifactId': self.ArtifactId}
 
-    #Tìm AccountId
-    @classmethod
-    def find_by_id1(cls, id):
-        return cls.query.filter_by(AccountId=id).first()
 
-    # Tìm ArtifactId
     @classmethod
-    def find_by_id2(cls, id):
-        return cls.query.filter_by(ArtifactId=id).first()
+    def find_by_id(cls, id1, id2):
+        return cls.query.filter_by(AccountId=id1, ArtifactId=id2).first()
+
 
     #phân loại theo account
     @classmethod
-    def find_by_id(cls, id):
+    def find_by_id1(cls, id):
         q = cls.query.filter_by(AccountId=id)
         return q.all()
+
 
 
     def save_to_db(self):

@@ -10,7 +10,7 @@ from controller.artifacttype import artifactType, artifactTypes
 from src.controller.account import Account, Register, Confirmation, Repass, ChangePass, UserLogoutAccess
 
 from controller.artifacttypemapping import artifactTypeMapping, artifactTypeMappings, artifactsType
-from controller.accountfavoriteartifact import accountFA, accountFAs,accountsFAs
+from controller.accountfavoriteartifact import accountFA, accountFAs
 from controller.rattings import Rattings, ratting
 from controller.notification import notification, Notifications
 from src import controller
@@ -24,9 +24,10 @@ app.config.from_pyfile('core/config.py')
 api = Api(app)
 controller.init_app(app)
 
-api.add_resource(image, '/image/<string:name>',  '/image')
+api.add_resource(image, '/image/<int:id>',  '/image')
 api.add_resource(Images, '/images')
-api.add_resource(artifact, '/artifact/<string:name>')
+
+api.add_resource(artifact, '/artifact/<string:name>', '/artifact')
 api.add_resource(artifacts, '/artifacts')
 
 api.add_resource(Event, '/event/<string:name>', '/event')
@@ -49,7 +50,7 @@ api.add_resource(Rattings, '/rattings')
 api.add_resource(ratting, '/ratting/<int:id>', '/ratting')
 
 api.add_resource(Notifications, '/notifications')
-api.add_resource(notification, '/notification/<int:id>')
+api.add_resource(notification, '/notification/<int:id>', '/notification')
 
 api.add_resource(artifactTypeMapping, '/artifactTypeMapping/<int:id>&<int:typeId>', '/artifactTypeMapping')
 api.add_resource(artifactTypeMappings, '/artifactTypeMappings')
@@ -57,8 +58,7 @@ api.add_resource(artifactsType, '/artifactsType/<int:id>')
 
 #accountFavoriteArtifact
 api.add_resource(accountFA, '/accountFA/<int:AccId>&<int:id>', '/accountFA')
-api.add_resource(accountsFAs, '/accountFAs')
-api.add_resource(accountFAs, '/accountFAs/<int:id>')
+api.add_resource(accountFAs, '/accountFAs/<int:AccId>') # phân loại theo account
 
 @controller.jwt_manager.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):

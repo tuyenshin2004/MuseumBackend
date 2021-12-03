@@ -9,7 +9,7 @@ class Souvenir(db.Model):
         Price = db.Column(db.Integer)
         Discount = db.Column(db.Float)
         ImageId = db.Column(db.Integer, db.ForeignKey('image.ImageId'))
-        Image = relationship("Image", foreign_keys=[ImageId])
+        #Image = relationship("Image", foreign_keys=[ImageId])
 
         def __init__(self,SouvenirId, Name, Description, Price, Discount, ImageId):
                 self.SouvenirId = SouvenirId
