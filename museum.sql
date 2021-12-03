@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 29, 2021 at 01:02 PM
+-- Generation Time: Dec 03, 2021 at 02:58 AM
 -- Server version: 10.4.21-MariaDB-log
 -- PHP Version: 8.0.10
 
@@ -29,19 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `AccountId` int(4) NOT NULL,
-  `displayName` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `Phone` varchar(50) NOT NULL,
   `Password` varchar(50) NOT NULL,
-  `DOB` date NOT NULL,
   `RoleId` int(4) NOT NULL,
-  `RecoverPasswordCode` varchar(50) DEFAULT NULL,
-  `ExpiredTimeCode` date DEFAULT NULL,
-  `FacebookId` varchar(50) DEFAULT NULL,
+  `isActivated` tinyint(4) NOT NULL,
+  `confirmedAt` datetime DEFAULT NULL,
   `GoogleId` varchar(50) DEFAULT NULL,
   `CreateAt` date DEFAULT NULL,
-  `UpdateAt` date DEFAULT NULL,
-  `ImageId` int(4) NOT NULL
+  `UpdateAt` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -91,7 +86,7 @@ CREATE TABLE `accounttest` (
 INSERT INTO `accounttest` (`AccountId`, `email`, `Password`, `RoleId`, `isActivated`, `confirmedAt`, `GoogleId`, `CreateAt`, `UpdateAt`) VALUES
 (51, '19020204@vnu.edu.vn', 'sha256$sM58UADvQuaY8nS3$e93d9a4c4d65527f77a2632469176936f43af93ed48c62da488bd169d4e56818', NULL, 0, NULL, NULL, '2021-11-26 21:32:17', NULL),
 (52, '19020484@vnu.edu.vn', 'sha256$TGnG37sWbuUlT8Ct$634bb2437318745d55b90e58972fdbf059e8e51545de0c5c06472b8f02d732d2', NULL, 0, NULL, NULL, '2021-11-26 21:32:32', NULL),
-(53, 'trangco19621962@gmail.com', 'sha256$bx4zNfp9rPsQc289$5cea5819f71c66983a4ea1c798a087721d0ce89afc0ea2d9a524862cdcc23dc7', NULL, 1, '2021-11-28 18:40:44', NULL, '2021-11-28 18:40:08', NULL);
+(53, 'trangco19621962@gmail.com', 'sha256$ySxtkSQ3mosU31rR$6a4a7680604bc0f83a64bcdb678dd8ed31a2061f1303eda79ba2c7c42b72f06b', NULL, 1, '2021-11-28 18:40:44', NULL, '2021-11-28 18:40:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -144,13 +139,13 @@ CREATE TABLE `artifacttypemapping` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `entrytiket`
+-- Table structure for table `entryticket`
 --
 
-CREATE TABLE `entrytiket` (
+CREATE TABLE `entryticket` (
   `TicketId` int(4) NOT NULL,
   `OrderId` int(4) NOT NULL,
-  `TiketDate` date NOT NULL,
+  `TicketDate` date NOT NULL,
   `TimeFrameId` int(4) NOT NULL,
   `NumberPerson` int(2) NOT NULL,
   `TicketType` int(4) NOT NULL
@@ -210,14 +205,10 @@ CREATE TABLE `notification` (
 CREATE TABLE `orders` (
   `OrderId` int(4) NOT NULL,
   `OrderDate` date NOT NULL,
-  `ToatlPrice` int(30) NOT NULL,
+  `TotalPrice` int(30) NOT NULL,
   `CreatedAt` date NOT NULL,
-  `UpdateAt` date DEFAULT NULL,
-  `deletedAt` date DEFAULT NULL,
   `AccountId` int(4) NOT NULL,
-  `QRCode` varchar(100) DEFAULT NULL,
-  `Discount` decimal(2,2) DEFAULT NULL,
-  `IsActivated` int(1) NOT NULL
+  `QRCode` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -263,7 +254,14 @@ CREATE TABLE `revoked_tokens` (
 
 INSERT INTO `revoked_tokens` (`id`, `jti`) VALUES
 (1, '4a676677-9e77-4f21-8ce2-d9fec624180f'),
-(2, 'f4c2cdea-7536-45a8-9356-0c095993fdbd');
+(2, 'f4c2cdea-7536-45a8-9356-0c095993fdbd'),
+(3, 'd4693e7d-0194-48f2-a662-0e38fea11493'),
+(4, 'd4693e7d-0194-48f2-a662-0e38fea11493'),
+(5, 'd4693e7d-0194-48f2-a662-0e38fea11493'),
+(6, 'd4693e7d-0194-48f2-a662-0e38fea11493'),
+(7, 'a166b147-0959-4edb-b347-188ee9ecd617'),
+(8, '6bbbc605-f763-4755-a650-b7113ecb6449'),
+(9, 'fc6db7b2-d918-4ec9-bde1-a99dd49b541e');
 
 -- --------------------------------------------------------
 
@@ -298,8 +296,7 @@ CREATE TABLE `timeframe` (
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`AccountId`),
-  ADD KEY `fk_account_image` (`ImageId`);
+  ADD PRIMARY KEY (`AccountId`);
 
 --
 -- Indexes for table `accountfavoriteartifact`
@@ -351,9 +348,9 @@ ALTER TABLE `artifacttypemapping`
   ADD KEY `fk_ArtifactTypeMapping_ArtifactType` (`ArtifactTypeId`);
 
 --
--- Indexes for table `entrytiket`
+-- Indexes for table `entryticket`
 --
-ALTER TABLE `entrytiket`
+ALTER TABLE `entryticket`
   ADD PRIMARY KEY (`TicketId`),
   ADD KEY `fk_entryticket_TimeFrame` (`TimeFrameId`),
   ADD KEY `fk_entryticket_AgeGroup` (`TicketType`),
@@ -455,9 +452,9 @@ ALTER TABLE `artifacttype`
   MODIFY `ArtifactTypeId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `entrytiket`
+-- AUTO_INCREMENT for table `entryticket`
 --
-ALTER TABLE `entrytiket`
+ALTER TABLE `entryticket`
   MODIFY `TicketId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
@@ -494,7 +491,7 @@ ALTER TABLE `rattings`
 -- AUTO_INCREMENT for table `revoked_tokens`
 --
 ALTER TABLE `revoked_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `souvenir`
@@ -511,12 +508,6 @@ ALTER TABLE `timeframe`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `account`
---
-ALTER TABLE `account`
-  ADD CONSTRAINT `fk_account_image` FOREIGN KEY (`ImageId`) REFERENCES `image` (`ImageId`);
 
 --
 -- Constraints for table `accountfavoriteartifact`
@@ -546,9 +537,9 @@ ALTER TABLE `artifacttypemapping`
   ADD CONSTRAINT `fk_artifacttypemapping_artifact` FOREIGN KEY (`ArtifactId`) REFERENCES `artifact` (`ArtifactId`);
 
 --
--- Constraints for table `entrytiket`
+-- Constraints for table `entryticket`
 --
-ALTER TABLE `entrytiket`
+ALTER TABLE `entryticket`
   ADD CONSTRAINT `fk_entryticket_AgeGroup` FOREIGN KEY (`TicketType`) REFERENCES `agegroup` (`    GroupId`),
   ADD CONSTRAINT `fk_entryticket_Orders` FOREIGN KEY (`OrderId`) REFERENCES `orders` (`OrderId`),
   ADD CONSTRAINT `fk_entryticket_TimeFrame` FOREIGN KEY (`TimeFrameId`) REFERENCES `timeframe` (`    TimeFrameId`);
