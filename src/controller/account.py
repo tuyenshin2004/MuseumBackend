@@ -49,10 +49,12 @@ class Account(Resource):
         if AccountDb.find_by_email(email.lower()) is None:
             return {'message': "Incorrect username or password"}, 401
         user = AccountDb.find_by_email(email.lower())
-        print(check_password_hash(user.Password, password))
         if check_password_hash(user.Password, password):
-            access_token = create_access_token(identity=email.lower())
-            return jsonify(access_token=access_token)
+            if user.isActivated:
+                access_token = create_access_token(identity=email.lower())
+                return jsonify(access_token=access_token)
+            else:
+                return {"message": "Please confirm your account via your email"}, 401
         return {"message": "Incorrect username or password"}, 401
 
     def delete(self):
@@ -65,7 +67,7 @@ class Account(Resource):
 class Register(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('email', type=str)
-    parser.add_argument('password',type=str)
+    parser.add_argument('password', type=str)
 
     def get(self):
         pass
@@ -80,7 +82,8 @@ class Register(Resource):
             return {'message': "Invalid email or password"}, 400
         if AccountDb.find_by_email(email.lower()) is not None:
             return {'message': "An account with this email already existed."}, 400
-        user = AccountDb(email=email.lower(), Password=generate_password_hash(password, method='sha256'), createdAt=datetime.now())
+        user = AccountDb(email=email.lower(), Password=generate_password_hash(password, method='sha256'),
+                         createdAt=datetime.now())
         token = su.dumps(email.lower(), salt='email-confirm')
         link = url_for('confirmation', token=token, _external=True)
         try:
@@ -91,7 +94,7 @@ class Register(Resource):
         except Exception as e:
             print(e)
             return {'message': "Unable to send confirmation mail"}, 400
-        return {'message': "Login success"}, 200
+        return {'message': "Register success"}, 200
 
     def delete(self):
         return {'message': 'Not allowed'}, 404

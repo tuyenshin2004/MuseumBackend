@@ -4,11 +4,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class AccountDb(db.Model):
     __tablename__ = 'account'
-    AccountId = db.Column(db.Integer, primary_key=True, autoincrement= True)
+    AccountId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # displayName = db.Column(db.String(50))
     email = db.Column(db.String(100))
     Password = db.Column(db.String)
-    RoleId = db.Column(db.Integer)
+    RoleId = db.Column(db.Integer, server_default='1')
     isActivated = db.Column(db.Boolean(), nullable=False, server_default='0')
     confirmedAt = db.Column(db.DateTime)
     # RecoverPasswordCode = db.Column(db.String(50))
