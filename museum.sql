@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 05, 2021 at 12:53 PM
+-- Generation Time: Dec 05, 2021 at 05:36 PM
 -- Server version: 10.4.21-MariaDB-log
 -- PHP Version: 8.0.10
 
@@ -136,7 +136,6 @@ CREATE TABLE `artifacttypemapping` (
 CREATE TABLE `entryticket` (
   `TicketId` int(4) NOT NULL,
   `OrderId` int(4) NOT NULL,
-  `TicketDate` date NOT NULL,
   `TimeFrameId` int(4) NOT NULL,
   `NumberPerson` int(2) NOT NULL,
   `TicketType` int(4) NOT NULL
@@ -200,7 +199,8 @@ CREATE TABLE `orders` (
   `TotalPrice` int(30) NOT NULL,
   `CreatedAt` date NOT NULL,
   `AccountId` int(4) NOT NULL,
-  `QRCode` varchar(100) DEFAULT NULL
+  `QRCode` varchar(100) DEFAULT NULL,
+  `used` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

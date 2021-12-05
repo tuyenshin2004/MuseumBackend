@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship
 
 from src.database import db
 
+
 class Ratting(db.Model):
     __tablename__ = 'rattings'
     RattingId = db.Column(db.Integer, primary_key=True)
