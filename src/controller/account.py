@@ -135,7 +135,7 @@ class Repass(Resource):
             get_user = AccountDb.find_by_email(email)
             new_password = random_string()
             get_user.Password = generate_password_hash(new_password, method='sha256')
-            msg = Message('New Password Recovery', sender='phucpb.hrt@gmail.com', recipients=[email.lower()])
+            msg = Message('New Password Recovery', sender=os.environ['MAIL'], recipients=[email.lower()])
             msg.body = 'Your new password is {}'.format(new_password)
             my_mail.send(msg)
             get_user.updatedAt = datetime.now()
