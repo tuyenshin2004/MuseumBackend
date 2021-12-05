@@ -123,7 +123,7 @@ class Repass(Resource):
     parser.add_argument('email', type=str)
 
     def post(self):
-        data = Register.parser.parse_args()
+        data = Repass.parser.parse_args()
         email = data['email']
         regex_mail = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         pattern_mail = re.compile(regex_mail)
