@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 03, 2021 lúc 05:30 PM
--- Phiên bản máy phục vụ: 10.4.17-MariaDB
--- Phiên bản PHP: 7.4.15
+-- Host: 127.0.0.1:3306
+-- Generation Time: Dec 05, 2021 at 12:53 PM
+-- Server version: 10.4.21-MariaDB-log
+-- PHP Version: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,19 +18,19 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `museum`
+-- Database: `museum`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `account`
+-- Table structure for table `account`
 --
 
 CREATE TABLE `account` (
   `AccountId` int(4) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `email` varchar(1000) NOT NULL,
+  `Password` varchar(10000) NOT NULL,
   `RoleId` int(4) DEFAULT NULL,
   `isActivated` tinyint(4) DEFAULT NULL,
   `confirmedAt` datetime DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `account` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `accountfavoriteartifact`
+-- Table structure for table `accountfavoriteartifact`
 --
 
 CREATE TABLE `accountfavoriteartifact` (
@@ -53,7 +53,7 @@ CREATE TABLE `accountfavoriteartifact` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `accountfavoriteevent`
+-- Table structure for table `accountfavoriteevent`
 --
 
 CREATE TABLE `accountfavoriteevent` (
@@ -64,7 +64,7 @@ CREATE TABLE `accountfavoriteevent` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `accounttest`
+-- Table structure for table `accounttest`
 --
 
 CREATE TABLE `accounttest` (
@@ -82,7 +82,7 @@ CREATE TABLE `accounttest` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `agegroup`
+-- Table structure for table `agegroup`
 --
 
 CREATE TABLE `agegroup` (
@@ -94,7 +94,7 @@ CREATE TABLE `agegroup` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `artifact`
+-- Table structure for table `artifact`
 --
 
 CREATE TABLE `artifact` (
@@ -108,7 +108,7 @@ CREATE TABLE `artifact` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `artifacttype`
+-- Table structure for table `artifacttype`
 --
 
 CREATE TABLE `artifacttype` (
@@ -119,7 +119,7 @@ CREATE TABLE `artifacttype` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `artifacttypemapping`
+-- Table structure for table `artifacttypemapping`
 --
 
 CREATE TABLE `artifacttypemapping` (
@@ -130,7 +130,7 @@ CREATE TABLE `artifacttypemapping` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `entryticket`
+-- Table structure for table `entryticket`
 --
 
 CREATE TABLE `entryticket` (
@@ -145,7 +145,7 @@ CREATE TABLE `entryticket` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `image`
+-- Table structure for table `image`
 --
 
 CREATE TABLE `image` (
@@ -160,7 +160,7 @@ CREATE TABLE `image` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `museumevent`
+-- Table structure for table `museumevent`
 --
 
 CREATE TABLE `museumevent` (
@@ -176,7 +176,7 @@ CREATE TABLE `museumevent` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `notification`
+-- Table structure for table `notification`
 --
 
 CREATE TABLE `notification` (
@@ -191,7 +191,7 @@ CREATE TABLE `notification` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -206,7 +206,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `orderssouvenirdetail`
+-- Table structure for table `orderssouvenirdetail`
 --
 
 CREATE TABLE `orderssouvenirdetail` (
@@ -219,7 +219,7 @@ CREATE TABLE `orderssouvenirdetail` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `rattings`
+-- Table structure for table `rattings`
 --
 
 CREATE TABLE `rattings` (
@@ -232,7 +232,7 @@ CREATE TABLE `rattings` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `revoked_tokens`
+-- Table structure for table `revoked_tokens`
 --
 
 CREATE TABLE `revoked_tokens` (
@@ -243,7 +243,7 @@ CREATE TABLE `revoked_tokens` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `souvenir`
+-- Table structure for table `souvenir`
 --
 
 CREATE TABLE `souvenir` (
@@ -258,7 +258,7 @@ CREATE TABLE `souvenir` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `timeframe`
+-- Table structure for table `timeframe`
 --
 
 CREATE TABLE `timeframe` (
@@ -267,17 +267,17 @@ CREATE TABLE `timeframe` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `account`
+-- Indexes for table `account`
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`AccountId`);
 
 --
--- Chỉ mục cho bảng `accountfavoriteartifact`
+-- Indexes for table `accountfavoriteartifact`
 --
 ALTER TABLE `accountfavoriteartifact`
   ADD PRIMARY KEY (`ArtifactId`,`AccountId`) USING BTREE,
@@ -285,7 +285,7 @@ ALTER TABLE `accountfavoriteartifact`
   ADD KEY `fk_AccountFavoriteArtifact_Artifact` (`ArtifactId`);
 
 --
--- Chỉ mục cho bảng `accountfavoriteevent`
+-- Indexes for table `accountfavoriteevent`
 --
 ALTER TABLE `accountfavoriteevent`
   ADD PRIMARY KEY (`AccountId`,`EventId`),
@@ -293,32 +293,32 @@ ALTER TABLE `accountfavoriteevent`
   ADD KEY `fk_AccountFavoriteEvent_MuseumEvent` (`EventId`);
 
 --
--- Chỉ mục cho bảng `accounttest`
+-- Indexes for table `accounttest`
 --
 ALTER TABLE `accounttest`
   ADD PRIMARY KEY (`AccountId`);
 
 --
--- Chỉ mục cho bảng `agegroup`
+-- Indexes for table `agegroup`
 --
 ALTER TABLE `agegroup`
   ADD PRIMARY KEY (`    GroupId`);
 
 --
--- Chỉ mục cho bảng `artifact`
+-- Indexes for table `artifact`
 --
 ALTER TABLE `artifact`
   ADD PRIMARY KEY (`ArtifactId`),
   ADD KEY `fk_artifact_image` (`ImageId`);
 
 --
--- Chỉ mục cho bảng `artifacttype`
+-- Indexes for table `artifacttype`
 --
 ALTER TABLE `artifacttype`
   ADD PRIMARY KEY (`ArtifactTypeId`);
 
 --
--- Chỉ mục cho bảng `artifacttypemapping`
+-- Indexes for table `artifacttypemapping`
 --
 ALTER TABLE `artifacttypemapping`
   ADD PRIMARY KEY (`ArtifactId`,`ArtifactTypeId`),
@@ -326,7 +326,7 @@ ALTER TABLE `artifacttypemapping`
   ADD KEY `fk_ArtifactTypeMapping_ArtifactType` (`ArtifactTypeId`);
 
 --
--- Chỉ mục cho bảng `entryticket`
+-- Indexes for table `entryticket`
 --
 ALTER TABLE `entryticket`
   ADD PRIMARY KEY (`TicketId`),
@@ -335,34 +335,34 @@ ALTER TABLE `entryticket`
   ADD KEY `fk_entryticket_Orders` (`OrderId`);
 
 --
--- Chỉ mục cho bảng `image`
+-- Indexes for table `image`
 --
 ALTER TABLE `image`
   ADD PRIMARY KEY (`ImageId`);
 
 --
--- Chỉ mục cho bảng `museumevent`
+-- Indexes for table `museumevent`
 --
 ALTER TABLE `museumevent`
   ADD PRIMARY KEY (`EventId`),
   ADD KEY `fk_museumevent_image` (`Poster`);
 
 --
--- Chỉ mục cho bảng `notification`
+-- Indexes for table `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`NotificationId`),
   ADD KEY `fk_notification_account` (`AccountId`);
 
 --
--- Chỉ mục cho bảng `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`OrderId`),
   ADD KEY `fk_orders_account` (`AccountId`);
 
 --
--- Chỉ mục cho bảng `orderssouvenirdetail`
+-- Indexes for table `orderssouvenirdetail`
 --
 ALTER TABLE `orderssouvenirdetail`
   ADD PRIMARY KEY (`OrderId`,`SouvenirId`),
@@ -370,152 +370,152 @@ ALTER TABLE `orderssouvenirdetail`
   ADD KEY `fk_orderssouvenirdetail_souvenir` (`SouvenirId`);
 
 --
--- Chỉ mục cho bảng `rattings`
+-- Indexes for table `rattings`
 --
 ALTER TABLE `rattings`
   ADD PRIMARY KEY (`RattingId`),
   ADD KEY `fk_rattings_account` (`AccountId`);
 
 --
--- Chỉ mục cho bảng `revoked_tokens`
+-- Indexes for table `revoked_tokens`
 --
 ALTER TABLE `revoked_tokens`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `souvenir`
+-- Indexes for table `souvenir`
 --
 ALTER TABLE `souvenir`
   ADD PRIMARY KEY (`SouvenirId`),
   ADD KEY `fk_sou` (`ImageId`);
 
 --
--- Chỉ mục cho bảng `timeframe`
+-- Indexes for table `timeframe`
 --
 ALTER TABLE `timeframe`
   ADD PRIMARY KEY (`    TimeFrameId`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `account`
+-- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
   MODIFY `AccountId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `accounttest`
+-- AUTO_INCREMENT for table `accounttest`
 --
 ALTER TABLE `accounttest`
   MODIFY `AccountId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `agegroup`
+-- AUTO_INCREMENT for table `agegroup`
 --
 ALTER TABLE `agegroup`
   MODIFY `    GroupId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `artifact`
+-- AUTO_INCREMENT for table `artifact`
 --
 ALTER TABLE `artifact`
   MODIFY `ArtifactId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `artifacttype`
+-- AUTO_INCREMENT for table `artifacttype`
 --
 ALTER TABLE `artifacttype`
   MODIFY `ArtifactTypeId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `entryticket`
+-- AUTO_INCREMENT for table `entryticket`
 --
 ALTER TABLE `entryticket`
   MODIFY `TicketId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `image`
+-- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
   MODIFY `ImageId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `museumevent`
+-- AUTO_INCREMENT for table `museumevent`
 --
 ALTER TABLE `museumevent`
   MODIFY `EventId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `notification`
+-- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
   MODIFY `NotificationId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `OrderId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `rattings`
+-- AUTO_INCREMENT for table `rattings`
 --
 ALTER TABLE `rattings`
   MODIFY `RattingId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `revoked_tokens`
+-- AUTO_INCREMENT for table `revoked_tokens`
 --
 ALTER TABLE `revoked_tokens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `souvenir`
+-- AUTO_INCREMENT for table `souvenir`
 --
 ALTER TABLE `souvenir`
   MODIFY `SouvenirId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `timeframe`
+-- AUTO_INCREMENT for table `timeframe`
 --
 ALTER TABLE `timeframe`
   MODIFY `    TimeFrameId` int(4) NOT NULL AUTO_INCREMENT;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `accountfavoriteartifact`
+-- Constraints for table `accountfavoriteartifact`
 --
 ALTER TABLE `accountfavoriteartifact`
   ADD CONSTRAINT `fk_AccountFavoriteArtifact_Account` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`),
   ADD CONSTRAINT `fk_AccountFavoriteArtifact_Artifact` FOREIGN KEY (`ArtifactId`) REFERENCES `artifact` (`ArtifactId`);
 
 --
--- Các ràng buộc cho bảng `accountfavoriteevent`
+-- Constraints for table `accountfavoriteevent`
 --
 ALTER TABLE `accountfavoriteevent`
   ADD CONSTRAINT `fk_AccountFavoriteEvent_Account` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`),
   ADD CONSTRAINT `fk_AccountFavoriteEvent_MuseumEvent` FOREIGN KEY (`EventId`) REFERENCES `museumevent` (`EventId`);
 
 --
--- Các ràng buộc cho bảng `artifact`
+-- Constraints for table `artifact`
 --
 ALTER TABLE `artifact`
   ADD CONSTRAINT `fk_artifact_image` FOREIGN KEY (`ImageId`) REFERENCES `image` (`ImageId`);
 
 --
--- Các ràng buộc cho bảng `artifacttypemapping`
+-- Constraints for table `artifacttypemapping`
 --
 ALTER TABLE `artifacttypemapping`
   ADD CONSTRAINT `fk_ArtifactTypeMapping_ArtifactType` FOREIGN KEY (`ArtifactTypeId`) REFERENCES `artifacttype` (`ArtifactTypeId`),
   ADD CONSTRAINT `fk_artifacttypemapping_artifact` FOREIGN KEY (`ArtifactId`) REFERENCES `artifact` (`ArtifactId`);
 
 --
--- Các ràng buộc cho bảng `entryticket`
+-- Constraints for table `entryticket`
 --
 ALTER TABLE `entryticket`
   ADD CONSTRAINT `fk_entryticket_AgeGroup` FOREIGN KEY (`TicketType`) REFERENCES `agegroup` (`    GroupId`),
@@ -523,38 +523,38 @@ ALTER TABLE `entryticket`
   ADD CONSTRAINT `fk_entryticket_TimeFrame` FOREIGN KEY (`TimeFrameId`) REFERENCES `timeframe` (`    TimeFrameId`);
 
 --
--- Các ràng buộc cho bảng `museumevent`
+-- Constraints for table `museumevent`
 --
 ALTER TABLE `museumevent`
   ADD CONSTRAINT `fk_museumevent_image` FOREIGN KEY (`Poster`) REFERENCES `image` (`ImageId`);
 
 --
--- Các ràng buộc cho bảng `notification`
+-- Constraints for table `notification`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `fk_notification_account` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`);
 
 --
--- Các ràng buộc cho bảng `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `fk_orders_account` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`);
 
 --
--- Các ràng buộc cho bảng `orderssouvenirdetail`
+-- Constraints for table `orderssouvenirdetail`
 --
 ALTER TABLE `orderssouvenirdetail`
   ADD CONSTRAINT `fk_OrdersSouvenirDetail_Orders` FOREIGN KEY (`OrderId`) REFERENCES `orders` (`OrderId`),
   ADD CONSTRAINT `fk_orderssouvenirdetail_souvenir` FOREIGN KEY (`SouvenirId`) REFERENCES `souvenir` (`SouvenirId`);
 
 --
--- Các ràng buộc cho bảng `rattings`
+-- Constraints for table `rattings`
 --
 ALTER TABLE `rattings`
   ADD CONSTRAINT `fk_rattings_account` FOREIGN KEY (`AccountId`) REFERENCES `account` (`AccountId`);
 
 --
--- Các ràng buộc cho bảng `souvenir`
+-- Constraints for table `souvenir`
 --
 ALTER TABLE `souvenir`
   ADD CONSTRAINT `fk_sou` FOREIGN KEY (`ImageId`) REFERENCES `image` (`ImageId`);
