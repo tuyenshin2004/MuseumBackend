@@ -7,7 +7,7 @@ class Image(db.Model):
     ImageId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Name = db.Column(db.String(50))
     Content = db.Column(db.String(100))
-    Url = db.Column(db.BLOB)
+    Url = db.Column(db.String(100))
     Path = db.Column(db.String(100))
     MimeType = db.Column(db.String(100))
 
@@ -30,7 +30,7 @@ class Image(db.Model):
 
 
     def json(self):
-        self.Url = str(self.Url)
+        # self.Url = str(self.Url)
         return {'ImageId': self.ImageId, 'Name': self.Name, 'Content': self.Content, 'Url': self.Url, 'Path': self.Path,
                 'MimeType': self.MimeType}
 
