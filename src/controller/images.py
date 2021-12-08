@@ -1,3 +1,5 @@
+import os
+
 import sqlalchemy
 from flask import request, Response
 from flask_restful import Resource, reqparse
@@ -9,7 +11,7 @@ class image(Resource):
     parser.add_argument('ImageId', type=int)
     parser.add_argument('Name', type=str)
     parser.add_argument('Content', type=str)
-    parser.add_argument('Url')
+    parser.add_argument('Url', type=str)
     parser.add_argument('Path', type=str)
     parser.add_argument('MimeType', type=str)
     #args = parser.parse_args()
@@ -32,10 +34,14 @@ class image(Resource):
                 return 'No pic loader', 400
         filename = secure_filename(pic.filename)
         mimetype = pic.mimetype
+        url = filename
+        path = 'C:/Users/Admin/Documents/GitHub/MuseumBackend/src/statics/images'
 
         if Image.find_by_name(filename):
             return {'message': "An image with name '{}' already exists.".format(filename)}, 400
-        img = Image(Name=filename, Content='', Url=pic.read(), Path='', MimeType=mimetype)
+        # img = Image(Name=filename, Content='', Url=pic.read(), Path='', MimeType=mimetype)
+        pic.save(os.path.join(path, filename))
+        img = Image(Name=filename, Content='', Url=url, Path=path, MimeType=mimetype)
         try:
             img.save_to_db()
         except:
@@ -56,6 +62,7 @@ class image(Resource):
         if img:
             img.Name = data['Name']
             img.Content = data['Content']
+            img.Url = data['Url']
             img.Path = data['Path']
             img.save_to_db()
             return {'message': 'Image put'}
