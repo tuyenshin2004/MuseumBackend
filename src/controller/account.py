@@ -85,10 +85,10 @@ class Register(Resource):
         user = AccountDb(email=email.lower(), Password=generate_password_hash(password, method='sha256'),
                          createdAt=datetime.now())
         token = su.dumps(email.lower(), salt='email-confirm')
-        link = url_for('confirmation', token=token, _external=True)
+        link = url_for('confirmation', token=token, _external=False)
         try:
             msg = Message('Confirm Email', sender=os.environ['MAIL'], recipients=[email.lower()])
-            msg.body = 'Your link is {}'.format(link)
+            msg.body = 'Your link is http://127.0.0.1:5000{}'.format(link)
             my_mail.send(msg)
             user.save_to_db()
         except Exception as e:
