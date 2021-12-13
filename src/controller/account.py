@@ -7,7 +7,8 @@ from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from src.controller import my_mail
 from flask import url_for, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity, get_raw_jwt
+# from flask_jwt_extended import create_access_token, jwt_required, current_user, get_jwt_identity, get_raw_jwt
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from flask_mail import Message
 
 import json
@@ -52,7 +53,7 @@ class Account(Resource):
         if check_password_hash(user.Password, password):
             if user.isActivated:
                 access_token = create_access_token(identity=email.lower())
-                return jsonify(access_token=access_token)
+                return jsonify(access_token=access_token.decode('utf-8'), role="1")
             else:
                 return {"message": "Please confirm your account via your email"}, 401
         return {"message": "Incorrect username or password"}, 401
@@ -151,7 +152,7 @@ class ChangePass(Resource):
     parser.add_argument('newpassword', type=str)
     parser.add_argument('renewpassword', type=str)
 
-    @jwt_required
+    @jwt_required()
     def post(self):
         data = ChangePass.parser.parse_args()
         password = data['password']
@@ -174,10 +175,11 @@ class UserLogoutAccess(Resource):
     User Logout Api
     """
 
-    @jwt_required
+    @jwt_required()
     def post(self):
 
-        jti = get_raw_jwt()['jti']
+        # jti = get_raw_jwt()['jti']
+        jti = get_jwt()['jti']
         # revoked_token = RevokedTokenModel(jti=jti)
         #
         # revoked_token.add()

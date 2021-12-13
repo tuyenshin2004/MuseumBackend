@@ -64,14 +64,19 @@ api.add_resource(accountFAs, '/accountFAs/<int:AccId>') # phân loại theo acco
 api.add_resource(Order, '/orderticker/<int:id>')
 api.add_resource(OrderQR, '/checkorder')
 
+# flask_jwt_extended == 3.21.0
+# @controller.jwt_manager.token_in_blacklist_loader
+# def check_if_token_in_blacklist(decrypted_token):
+#
+#     jti = decrypted_token['jti']
+#
+#     return controller.account.RevokedTokenModel.is_jti_blacklisted(jti)
 
-
-@controller.jwt_manager.token_in_blacklist_loader
-def check_if_token_in_blacklist(decrypted_token):
-
-    jti = decrypted_token['jti']
-
-    return controller.account.RevokedTokenModel.is_jti_blacklisted(jti)
+@controller.jwt_manager.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload):
+    jti = jwt_payload["jti"]
+    token = db.session.query(controller.account.RevokedTokenModel.id).filter_by(jti=jti).scalar()
+    return token is not None
 
 
 if __name__ == '__main__':
