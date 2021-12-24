@@ -10,8 +10,8 @@ class artifact(Resource):
     parser.add_argument('Level', type=int)
     parser.add_argument('ImageId', type=int)
 
-    def get(self, name):
-        atf = Artifact.find_by_name(name)
+    def get(self, id):
+        atf = Artifact.find_by_id(id)
         if atf:
             return atf.json()
         return {'message': 'Artifact not found'}, 404
@@ -27,16 +27,16 @@ class artifact(Resource):
             return {"message": "An error occurred inserting the artifact."}, 500
         return {"message": "Artifact added."}, 201
 
-    def delete(self, name):
-        art = Artifact.find_by_name(name)
+    def delete(self, id):
+        art = Artifact.find_by_id(id)
         if art:
             art.delete_from_db()
             return {'message': 'Artifact deleted.'}
         return {'message': 'Artifact not found.'}, 404
 
-    def put(self, name):
+    def put(self, id):
         data = artifact.parser.parse_args()
-        art = Artifact.find_by_name(name)
+        art = Artifact.find_by_id(id)
 
         if art:
             art.Name = data['Name']
